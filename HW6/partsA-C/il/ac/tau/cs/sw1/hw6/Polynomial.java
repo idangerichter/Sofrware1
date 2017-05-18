@@ -34,8 +34,8 @@ public class Polynomial {
 	 */
 	public Polynomial adds(Polynomial polynomial)
 	{
-		int n1 = getDegree();
-		int n2 = polynomial.getDegree();
+		int n1 = getDegree()+1;
+		int n2 = polynomial.getDegree()+1;
 		int n = Math.max(n1, n2);
 
 		double[] coefs = new double[n];
@@ -63,18 +63,19 @@ public class Polynomial {
 	 */
 	public Polynomial multiply(double a)
 	{
-		return null;
-		
+		double[] coefs = new double[getDegree()+1];
+		for(int i=0;i<getDegree()+1;i++){
+			coefs[i] = a * getCoefficient(i);
+		}
+		return new Polynomial(coefs);
 	}
 	/*
 	 * Returns the degree (the largest exponent) of this polynomial.
 	 */
 	public int getDegree() {
-		// if an == 0 => than its the zero polynomial
-		if (coefficients[coefficients.length-1] == 0)
-			return 0;
-		return coefficients.length;
+		return coefficients.length-1;
 	}
+
 	/*
 	 * Returns the coefficient of the variable x 
 	 * with degree n in this polynomial.
@@ -91,7 +92,16 @@ public class Polynomial {
 	 */
 	public Polynomial getFirstDerivation()
 	{
-		return this;
+		if (getDegree() <= 1) {
+			return new Polynomial(); // derivation of a0 is zero
+		}
+		
+		double[] dCoefs = new double[getDegree()];
+		for(int i=0;i< getDegree();i++){
+			dCoefs[i] = getCoefficient(i+1)*(i+1);
+		}
+		
+		return new Polynomial(dCoefs);
 	}
 	
 	/*
